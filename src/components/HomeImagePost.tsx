@@ -6,10 +6,11 @@ import Box from '@mui/material/Box';
 
 interface MainFeaturedPostProps {
     post: {
-        description: string;
-        image: any;
-        imageText: string;
         title: string;
+        description: string;
+        image: string;
+        imageText: string;
+        
     };
 }
 
@@ -20,9 +21,9 @@ export default function MainFeaturedPost(props: MainFeaturedPostProps) {
         <Paper
             sx={{
                 position: 'relative',
-                backgroundColor: 'grey.800',
+                // backgroundColor: 'grey.800',
                 color: '#fff',
-                mb: 4,
+                // mb: 4,
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
@@ -38,7 +39,7 @@ export default function MainFeaturedPost(props: MainFeaturedPostProps) {
                     bottom: 0,
                     right: 0,
                     left: 0,
-                    backgroundColor: 'rgba(0,0,0,.3)',
+                    backgroundColor: 'rgba(0,0,0,.2)',
                 }}
             />
             <Grid container>
@@ -56,7 +57,6 @@ export default function MainFeaturedPost(props: MainFeaturedPostProps) {
                         <Typography variant="h5" color="inherit" paragraph>
                             {post.description}
                         </Typography>
-                      
                     </Box>
                 </Grid>
             </Grid>

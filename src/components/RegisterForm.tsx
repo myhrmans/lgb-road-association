@@ -30,12 +30,10 @@ function Copyright(props: any) {
     );
 }
 
-export interface IRegisterPageProps {
-}
 
 const theme = createTheme();
 
-const RegisterPage: React.FunctionComponent<IRegisterPageProps> = (props) => {
+export const RegisterForm = () => {
     const [registering, setRegistering] = useState<boolean>(false)
     const [firstName, setFirstName] = useState<string>('')
     const [lastNameName, setLastName] = useState<string>('')
@@ -167,4 +165,3 @@ const RegisterPage: React.FunctionComponent<IRegisterPageProps> = (props) => {
         </ThemeProvider>
     );
 }
-export default RegisterPage;
