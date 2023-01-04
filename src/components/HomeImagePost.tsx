@@ -9,7 +9,6 @@ interface MainFeaturedPostProps {
         description: string;
         image: string;
         imageText: string;
-        
     };
 }
 

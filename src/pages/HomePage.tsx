@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import HomeImagePost from "../components/HomeImagePost";
 import {firebaseStorage} from "../config/firebase"
 import {ref, getDownloadURL} from "firebase/storage";

@@ -4,7 +4,7 @@ import { getAuth } from "firebase/auth"
 import { getStorage, ref } from "firebase/storage";
 import { getFirestore, query, getDocs, collection, where, addDoc } from "firebase/firestore"
 
-export const firebaseConfig = {
+const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
     projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
@@ -14,13 +14,14 @@ export const firebaseConfig = {
 }
 const app = firebase.initializeApp(firebaseConfig)
 
-export const auth = getAuth(app);
-//export default app
+const auth = getAuth(app);
 
 // Get a reference to the storage service, which is used to create references in your storage bucket
-export const firebaseStorage = getStorage(app);
+const firebaseStorage = getStorage(app);
 
 // Create a storage reference from our storage service
-export const storageRef = ref(firebaseStorage);
+const storageRef = ref(firebaseStorage);
 
 export const db = getFirestore(app);
+
+export { firebaseStorage, storageRef, auth, firebaseConfig, app }

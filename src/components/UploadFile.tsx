@@ -24,13 +24,6 @@ export default function UploadFile(params: {
 
   return (
     <>
-      <input
-        type="file"
-        onChange={(event) => {
-          setFileUpload(event.target.files![0]);
-        }}
-      />
-      <Button onClick={uploadFile}>Ladda upp fil</Button>
     </>
   );
 }
