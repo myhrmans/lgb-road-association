@@ -2,7 +2,7 @@ import firebase from "firebase/compat/app"
 import "firebase/compat/auth"
 import { getAuth } from "firebase/auth"
 import { getStorage, ref } from "firebase/storage";
-import { getFirestore, query, getDocs, collection, where, addDoc } from "firebase/firestore"
+import { getFirestore } from "firebase/firestore"
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -12,16 +12,14 @@ const firebaseConfig = {
     messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.REACT_APP_FIREBASE_APP_ID
 }
-const app = firebase.initializeApp(firebaseConfig)
+export const app = firebase.initializeApp(firebaseConfig)
 
-const auth = getAuth(app);
+export const auth = getAuth(app);
 
 // Get a reference to the storage service, which is used to create references in your storage bucket
-const firebaseStorage = getStorage(app);
+export const firebaseStorage = getStorage(app);
 
 // Create a storage reference from our storage service
-const storageRef = ref(firebaseStorage);
+export const storageRef = ref(firebaseStorage);
 
 export const db = getFirestore(app);
-
-export { firebaseStorage, storageRef, auth, firebaseConfig, app }

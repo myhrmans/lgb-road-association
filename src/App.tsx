@@ -1,41 +1,41 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import AuthRoute from "./components/AuthRoute";
-
 import Header from "./components/Header";
 import Container from "@mui/material/Container";
-import { ThemeProvider } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { FilePage } from "./pages/FilePage";
+import { AuthContextProvider } from "./common/contexts/AuthContext";
 import { LoginForm } from "./components/LoginForm";
-import { PopupModal } from "./components/"
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#000",
-    },
-  },
-});
+import { ProtectedRoutes } from "./components/ProtectedRoutes";
+import { Blaha } from "./pages/Blaha";
 
 function App() {
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#000",
+      },
+      secondary: {
+        main: "#469597",
+      },
+    },
+  });
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Container maxWidth="lg">
-        <Header />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <AuthRoute>
-                <HomePage />
-              </AuthRoute>
-            }
-          />
-          <Route path="/protokoll" element={<FilePage />} />
-          <Route path="login" element={<PopupModal content={<LoginForm />} buttonText="Logga in" />} />
-        </Routes>
+        <AuthContextProvider>
+          <Routes>
+            <Route element={<Header />} path="/">
+              <Route element={<HomePage />} index />
+              <Route element={<ProtectedRoutes />}>
+                <Route element={<FilePage />} path="/protokoll" />
+              </Route>
+              <Route element={<Blaha />} path="blaha" />
+              <Route element={<LoginForm />} path="login" />
+            </Route>
+          </Routes>
+        </AuthContextProvider>
       </Container>
     </ThemeProvider>
   );

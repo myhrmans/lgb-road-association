@@ -14,7 +14,6 @@ export const Logo = () => {
                     setUrl(x)
                 })
                 .catch((error) => {
-                    console.log(error)
                 })
         }
         func()

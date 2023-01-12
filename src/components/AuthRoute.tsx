@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {getAuth, onAuthStateChanged} from 'firebase/auth'
+import { onAuthStateChanged} from 'firebase/auth'
 import {useNavigate} from "react-router-dom";
 import { auth } from "../config/firebase"
 
@@ -16,11 +16,10 @@ const AuthRoute: React.FunctionComponent<IAuthRoutePageProps> = props => {
         AuthCheck();
     }, [auth])
 
-    const AuthCheck = onAuthStateChanged(auth, (user) => {
+  const AuthCheck = onAuthStateChanged(auth, (user) => {
         if (user) {
             setLoading(false)
         } else {
-            console.log('unauthorized');
             navigate('/login')
         }
     })

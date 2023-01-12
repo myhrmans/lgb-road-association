@@ -1,11 +1,5 @@
-import {
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -18,8 +12,8 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { auth } from "../config/firebase";
+import { UserAuth } from "../common/contexts/AuthContext";
+import { Paper } from "@mui/material";
 
 function Copyright(props: any) {
   return (
@@ -39,58 +33,37 @@ function Copyright(props: any) {
   );
 }
 
-const theme = createTheme();
-
-export const LoginForm = () => {
-  const navigate = useNavigate();
-  const [authing, setAuthing] = useState(false);
-
+export const LoginForm = (props: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const onLogin = async () => {
-    await signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
+  const navigate = useNavigate();
+  const { login } = UserAuth();
+
+  async function handleLogin() {
+    setError("");
+    await login(email, password)
+      .then(() => {
         navigate("/");
-        
-
       })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
-      });
-  };
-
-//   const signInWithGoogle = async () => {
-//     setAuthing(true);
-
-//     signInWithPopup(auth, new GoogleAuthProvider())
-//       .then((response) => {
-//         console.log(response.user.uid);
-//         navigate("/");
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//         setAuthing(false);
-//       });
-//   };
+      .catch();
+  }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
+      <Paper elevation={2} sx={{ m: 4 }}>
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 4,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
+          p={10}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -124,11 +97,11 @@ export const LoginForm = () => {
               label="Kom ihåg"
             />
             <Button
-              //type="submit"
-              onClick={() => onLogin()}
+              onClick={() => handleLogin()}
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 2, backgroundColor: "secondary.main" }}
+              //color="secondary"
             >
               Logga in
             </Button>
@@ -141,8 +114,8 @@ export const LoginForm = () => {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-    </ThemeProvider>
+        {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
+      </Paper>
+    </Container>
   );
 };

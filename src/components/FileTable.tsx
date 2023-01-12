@@ -19,6 +19,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { Data } from "../pages/FilePage";
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -154,6 +155,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             </TableSortLabel>
           </TableCell>
         ))}
+        <TableCell />
       </TableRow>
     </TableHead>
   );
@@ -260,11 +262,11 @@ export default function FileTable({ rows }: IFileTable) {
         selected.slice(selectedIndex + 1)
       );
     }
-
     setSelected(newSelected);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
+    console.log("newpage", newPage);
     setPage(newPage);
   };
 
@@ -275,9 +277,30 @@ export default function FileTable({ rows }: IFileTable) {
     setPage(0);
   };
 
+  const handleFileDownload = async (row: Data) => {
+    const xhr = new XMLHttpRequest();
+    try {
+      const image = await fetch(row.url);
+      const imageBlob = await image.blob();
+      const imageURL = URL.createObjectURL(imageBlob);
+      const anchor = document.createElement("a");
+      anchor.href = imageURL;
+      anchor.download = "bla";
+
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+
+      URL.revokeObjectURL(imageURL);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
+
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
@@ -338,6 +361,12 @@ export default function FileTable({ rows }: IFileTable) {
                       <TableCell align="right">
                         {row.fileSize / 1000} KB
                       </TableCell>
+                      <TableCell>
+                        <FileDownloadOutlinedIcon
+                          sx={{ cursor: "pointer" }}
+                          onClick={() => handleFileDownload(row)}
+                        />
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -361,7 +390,7 @@ export default function FileTable({ rows }: IFileTable) {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage={"Rader per sida"}
+          labelRowsPerPage={"Rader per sida:"}
           labelDisplayedRows={({ from, to, count }) =>
             `${from}-${to} av ${count}`
           }
