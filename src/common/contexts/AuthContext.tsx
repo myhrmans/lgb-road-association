@@ -13,14 +13,18 @@ import {
   useEffect,
   useContext,
 } from "react";
-import { auth } from "../../config/firebase";
+import { auth, storageRef } from "../../config/firebase";
 import { User, signInWithEmailAndPassword } from "firebase/auth";
+import { Data } from "../types/Types";
+import { deleteObject, ref } from "firebase/storage";
 
 export type AuthContextType = {
   user: User | null;
   role: any | null;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
+  downloadFile: (row: Data) => Promise<void>;
+  deleteFile: (fileName: string) => void;
 };
 
 export const UserContext = createContext<AuthContextType>(
@@ -57,11 +61,40 @@ export const AuthContextProvider: FC<UserContextProviderProps> = ({
     return signOut(auth);
   };
 
+  const downloadFile = async (row: Data) => {
+    const image = await fetch(row.url);
+    const imageBlob = await image.blob();
+    const imageURL = URL.createObjectURL(imageBlob);
+    const anchor = document.createElement("a");
+
+    anchor.href = imageURL;
+    anchor.download = row.fileName;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+
+    URL.revokeObjectURL(imageURL);
+  };
+
+  const deleteFile = async (fileName: string) => {
+    const fileRef = ref(storageRef, `files/protocols/${fileName}`);
+
+    await deleteObject(fileRef)
+      .then(() => {
+        console.log("file deleted");
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
   const contextValue = {
     user,
     role,
     login,
     logout,
+    downloadFile,
+    deleteFile,
   };
 
   if (loading) {

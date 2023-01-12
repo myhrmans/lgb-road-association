@@ -3,7 +3,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Logo } from "./Logo";
-import { Tab, Tabs } from "@mui/material";
+import { IconButton, Tab, Tabs } from "@mui/material";
 import { Outlet, useNavigate } from "react-router-dom";
 import { UserAuth } from "../common/contexts/AuthContext";
 import { useState } from "react";
@@ -36,10 +36,10 @@ export default function Header() {
               navigate("/");
             }}
             style={{ cursor: "pointer" }}
-          ></div>
-          <a onClick={() => navigate("/")}>
+          >
             <Logo />
-          </a>
+          </div>
+
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Lassagårdsbergs Vägförening
           </Typography>

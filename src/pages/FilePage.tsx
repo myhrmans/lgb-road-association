@@ -10,14 +10,7 @@ import {
   StorageReference,
 } from "firebase/storage";
 import FileTable from "../components/FileTable";
-
-export interface Data {
-  fileName: string;
-  date: string;
-  fileType: string;
-  fileSize: number;
-  url: string;
-}
+import { Data } from "../common/types/Types";
 
 function createData(
   fileName: string,
