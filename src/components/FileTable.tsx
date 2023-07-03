@@ -13,6 +13,7 @@ import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { EnhancedTableHead } from "./TableHead";
 import { EnhancedTableToolbar } from "./TableToolbar";
 import { UserAuth } from "../common/contexts/AuthContext";
+import { Dispatch, SetStateAction, useState } from "react";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -55,14 +56,19 @@ function stableSort<T>(
 
 interface IFileTable {
   rows: Data[];
+  setRows: Dispatch<SetStateAction<Data[]>>;
 }
 
-export default function FileTable({ rows }: IFileTable) {
-  const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("date");
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+export default function FileTable({
+  rows,
+  setRows,
+}: IFileTable) {
+  const [order, setOrder] = useState<Order>("desc");
+  const [orderBy, setOrderBy] = useState<keyof Data>("date");
+  const [selected, setSelected] = useState<readonly string[]>([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  let download = false;
 
   const { downloadFile } = UserAuth();
 
@@ -88,6 +94,10 @@ export default function FileTable({ rows }: IFileTable) {
     const selectedIndex = selected.indexOf(name);
 
     let newSelected: readonly string[] = [];
+    if (download) {
+      download = false;
+      return;
+    }
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, name);
@@ -116,8 +126,9 @@ export default function FileTable({ rows }: IFileTable) {
   };
 
   const handleFileDownload = async (row: Data) => {
+    download = true;
     try {
-      downloadFile(row);
+      await downloadFile(row);
     } catch (error) {
       console.log(error);
     }
@@ -126,14 +137,19 @@ export default function FileTable({ rows }: IFileTable) {
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} selected={selected}/>
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          selected={selected}
+          setSelected={setSelected}
+          rows={rows}
+          setRows={setRows}
+        />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -190,7 +206,9 @@ export default function FileTable({ rows }: IFileTable) {
                       <TableCell>
                         <FileDownloadOutlinedIcon
                           sx={{ cursor: "pointer" }}
-                          onClick={() => handleFileDownload(row)}
+                          onClick={() => {
+                            handleFileDownload(row);
+                          }}
                         />
                       </TableCell>
                     </TableRow>

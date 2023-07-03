@@ -1,18 +1,17 @@
-import UploadFile from "../components/UploadFile";
-import { useEffect, useState } from "react";
-import { firebaseStorage } from "../config/firebase";
 import {
-  ref,
-  listAll,
   getDownloadURL,
   getMetadata,
+  listAll,
   ListResult,
+  ref,
   StorageReference,
 } from "firebase/storage";
-import FileTable from "../components/FileTable";
+import { useEffect, useState } from "react";
 import { Data } from "../common/types/Types";
+import FileTable from "../components/FileTable";
+import { firebaseStorage } from "../config/firebase";
 
-function createData(
+export function createData(
   fileName: string,
   date: string,
   fileType: string,
@@ -46,7 +45,6 @@ const handleFileItem = async (item: StorageReference) => {
 };
 
 export const FilePage = () => {
-  //const [fileList, setFileList] = useState<any>([]);
   const fileListRef = ref(firebaseStorage, "files/protocols/");
   const [rows, setRows] = useState<Data[]>([]);
 
@@ -56,15 +54,5 @@ export const FilePage = () => {
       .then((rows) => setRows(rows));
   }, []);
 
-  return (
-    <>
-      {/* <UploadFile
-        setFileList={(newFileList: any) => {
-          setFileList(newFileList);
-        }}
-      /> */}
-      {/* {fileList.map((url: any) => {})} */}
-      <FileTable rows={rows} />
-    </>
-  );
+  return <FileTable rows={rows} setRows={setRows} />;
 };

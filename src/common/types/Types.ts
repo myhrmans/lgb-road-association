@@ -13,4 +13,11 @@ export interface HeadCell {
   numeric: boolean;
 }
 
+export interface NewsData {
+  title: string;
+  date: Date;
+  text: string;
+}
+
+
 export type Order = "asc" | "desc";

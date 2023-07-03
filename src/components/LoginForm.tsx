@@ -15,24 +15,6 @@ import Container from "@mui/material/Container";
 import { UserAuth } from "../common/contexts/AuthContext";
 import { Paper } from "@mui/material";
 
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Lassagårdsbergs Vägförening
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
-
 export const LoginForm = (props: any) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -53,7 +35,7 @@ export const LoginForm = (props: any) => {
 
   return (
     <Container component="main" maxWidth="sm">
-      <Paper elevation={2} sx={{ m: 4 }}>
+      <Paper elevation={0} sx={{ m: 4 }}>
         <CssBaseline />
         <Box
           sx={{

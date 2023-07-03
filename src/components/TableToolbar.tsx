@@ -1,26 +1,64 @@
-import { Toolbar, alpha, Typography, Tooltip, IconButton } from "@mui/material";
-import { Data } from "../common/types/Types";
+import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
+import {
+  alpha,
+  Fab,
+  IconButton,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from "@mui/material";
+import { Dispatch, SetStateAction, useState } from "react";
 import { UserAuth } from "../common/contexts/AuthContext";
+import { Data } from "../common/types/Types";
+import { createData } from "../pages/FilePage";
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
   selected: readonly string[];
+  setSelected: Dispatch<SetStateAction<readonly string[]>>;
+  rows: Data[];
+  setRows: Dispatch<SetStateAction<Data[]>>;
 }
 
 export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-  const { numSelected, selected } = props;
+  const { numSelected, rows, setRows, selected, setSelected } = props;
 
-  const { deleteFile } = UserAuth();
+  const { deleteFile, uploadFile } = UserAuth();
 
   const handleDelete = () => {
-    selected.map((selectedRow) => {
-      deleteFile(selectedRow);
-    });
+    const promises = selected.map((selectedRow) => deleteFile(selectedRow));
 
-    // console.log(rows[numSelected]);
-    // console.log(numSelected);
+    Promise.all(promises).then(() => {
+      const remaningRows = rows.filter((row) => {
+        return !selected.includes(row.fileName);
+      });
+      setRows(remaningRows);
+    });
+    setSelected([]);
+  };
+
+  const handleUpload = async (fileList: FileList | null) => {
+    if (fileList == null) return;
+
+    let newFiles: Data[] = [];
+    const promises = Array.from(fileList).map((file) => uploadFile(file));
+
+    await Promise.all(promises).then((result) => {
+      result.forEach((file) => {
+        const metadata = file!.metadata;
+
+        const data = createData(
+          metadata.name,
+          `${new Date(metadata.timeCreated).toLocaleString()}`,
+          metadata.contentType ?? "",
+          metadata?.size,
+          ""
+        );
+        newFiles.push(data);
+      });
+      setRows(rows.concat(newFiles));
+    });
   };
 
   return (
@@ -44,7 +82,7 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {numSelected} {numSelected == 1 ? "fil vald" : "filer valda"}
         </Typography>
       ) : (
         <Typography
@@ -57,16 +95,40 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
         </Typography>
       )}
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="Radera">
           <IconButton onClick={() => handleDelete()}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
+        <Tooltip title="Ladda upp">
+          {
+            <label htmlFor="upload-photo">
+              <input
+                style={{ display: "none" }}
+                id="upload-photo"
+                name="upload-photo"
+                type="file"
+                onChange={(event) => {
+                  handleUpload(event.target.files);
+                }}
+              />
+
+              <Fab
+                color="primary"
+                size="small"
+                component="span"
+                aria-label="add"
+                variant="extended"
+                sx={{ width: "135px", mr: 4 }}
+              >
+                <AddCircleOutlinedIcon
+                  sx={{ mr: 1, color: "secondary.main" }}
+                />{" "}
+                Ladda upp
+              </Fab>
+            </label>
+          }
         </Tooltip>
       )}
     </Toolbar>

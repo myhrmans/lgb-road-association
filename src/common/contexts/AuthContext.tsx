@@ -1,22 +1,29 @@
+import Box from "@mui/material/Box";
+import CircularProgress from "@mui/material/CircularProgress";
 import {
   browserSessionPersistence,
   onAuthStateChanged,
   setPersistence,
+  signInWithEmailAndPassword,
   signOut,
-  UserCredential,
+  User,
+  UserCredential
 } from "firebase/auth";
 import {
-  useState,
+  collection, DocumentData,
+  getDocs
+} from "firebase/firestore";
+import { deleteObject, ref, uploadBytes, UploadResult } from "firebase/storage";
+import {
   createContext,
-  ReactNode,
   FC,
-  useEffect,
+  ReactNode,
   useContext,
+  useEffect,
+  useState
 } from "react";
-import { auth, storageRef } from "../../config/firebase";
-import { User, signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db, storageRef } from "../../config/firebase";
 import { Data } from "../types/Types";
-import { deleteObject, ref } from "firebase/storage";
 
 export type AuthContextType = {
   user: User | null;
@@ -24,7 +31,9 @@ export type AuthContextType = {
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
   downloadFile: (row: Data) => Promise<void>;
-  deleteFile: (fileName: string) => void;
+  deleteFile: (fileName: string) => Promise<void>;
+  uploadFile: (file: File) => Promise<UploadResult | undefined>;
+  getNewsCollection: (col: string) => Promise<DocumentData[]>;
 };
 
 export const UserContext = createContext<AuthContextType>(
@@ -77,15 +86,34 @@ export const AuthContextProvider: FC<UserContextProviderProps> = ({
   };
 
   const deleteFile = async (fileName: string) => {
-    const fileRef = ref(storageRef, `files/protocols/${fileName}`);
+    const filesRef = ref(storageRef, `files/protocols/${fileName}`);
 
-    await deleteObject(fileRef)
-      .then(() => {
-        console.log("file deleted");
+    await deleteObject(filesRef);
+  };
+
+  const uploadFile = async (file: File) => {
+    const filesRef = ref(storageRef, `files/protocols/${file.name}`);
+
+    return await uploadBytes(filesRef, file)
+      .then((snapshot) => {
+        return snapshot;
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Upload error", error);
+        return undefined;
       });
+  };
+
+  const getNewsCollection = async (col: string) => {
+    const colRef = collection(db, col);
+
+    return await getDocs(colRef).then((snapshot) => {
+      let data: DocumentData[] = [];
+      snapshot.docs.forEach((doc) => {
+        data.push({ ...doc.data(), id: doc.id });
+      });
+      return data;
+    });
   };
 
   const contextValue = {
@@ -95,10 +123,16 @@ export const AuthContextProvider: FC<UserContextProviderProps> = ({
     logout,
     downloadFile,
     deleteFile,
+    uploadFile,
+    getNewsCollection,
   };
 
   if (loading) {
-    return <>Loading...</>;
+    return (
+      <Box sx={{ display: "flex" }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (

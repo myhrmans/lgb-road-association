@@ -1,43 +1,30 @@
-import { useEffect, useState } from "react";
-import HomeImagePost from "../components/HomeImagePost";
-import { firebaseStorage } from "../config/firebase";
-import { ref, getDownloadURL } from "firebase/storage";
 import { Grid } from "@mui/material";
-import NewsPaper from "../components/NewsPaper";
+import { useQuery } from "@tanstack/react-query";
+import { DocumentData } from "firebase/firestore";
+import { UserAuth } from "../common/contexts/AuthContext";
+import HomePost from "../components/HomePost";
 import NewsCard from "../components/NewsCard";
 
 const HomePage = () => {
-  const [url, setUrl] = useState<string>("");
-  const imageRef = ref(firebaseStorage, "images/cow.jpg");
-
-  const mainPicturePost = {
-    title: "Välkommen till Lassagårdsbergs Vägförening",
-    description:
-      "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-    image: url,
-    imageText: "main image description",
-  };
-
-  useEffect(() => {
-    const func = async () => {
-      await getDownloadURL(imageRef)
-        .then((x) => {
-          setUrl(x);
-        })
-        .catch((error) => {});
-    };
-    func();
-  }, []);
+  const { getNewsCollection } = UserAuth();
+  const { data: newsPosts } = useQuery<DocumentData[]>(["newsPosts"], () =>
+    getNewsCollection("newsPost")
+  );
 
   return (
-    <Grid container rowGap={5}>
-      <Grid item xs={12}>
-        <HomeImagePost post={mainPicturePost} />
+    <Grid container maxWidth="lg">
+      <Grid item sm={9}>
+        <HomePost />
       </Grid>
-      <Grid container direction="column" alignItems="flex-end">
-        <NewsCard />
-        <NewsCard />
-        <NewsCard />
+      <Grid item sm={3}>
+        {newsPosts?.slice(0, 3)?.map((posts) => (
+          <NewsCard
+            key={posts.id}
+            title={posts.title}
+            date={posts.date.toDate()}
+            text={posts.text }
+          />
+        ))}
       </Grid>
     </Grid>
   );
