@@ -1,6 +1,7 @@
 {
   "name": "lgb-road-association",
   "version": "0.1.0",
+  "homepage": "https://louisektw.github.io/lgb-road-association/",
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^3.10.0",
