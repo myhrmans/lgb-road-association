@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import { NewsData } from "../../../common/types/Types";
 
-export default function NewsPost(props: NewsData) {
+export default function Post(props: NewsData) {
   return (
     <Box mb={4}>
       <Typography variant="h5">{props.title}</Typography>

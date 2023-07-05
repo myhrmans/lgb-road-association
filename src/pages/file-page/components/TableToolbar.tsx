@@ -91,7 +91,13 @@ export function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                             sx={{ mt: 2, width: '160px' }}
                         >
                             Ladda upp
-                            <input type="file" hidden onChange={(event) => {handleUpload(event.target.files)}}/>
+                            <input
+                                type="file"
+                                hidden
+                                onChange={(event) => {
+                                    handleUpload(event.target.files);
+                                }}
+                            />
                         </Button>
                     }
                 </Tooltip>

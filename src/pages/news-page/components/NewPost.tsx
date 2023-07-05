@@ -1,14 +1,32 @@
-import { Box, Typography } from "@mui/material";
-import { NewsData } from "../../../common/types/Types";
+import {
+    Box,
+    Button,
+    Collapse,
+    useTheme,
+} from '@mui/material';
+import { useState } from 'react';
+import Form from './Form';
 
-export default function NewsPost(props: NewsData) {
-  return (
-    <Box mb={4}>
-      <Typography variant="h5">{props.title}</Typography>
-      <Typography variant="subtitle1">
-        {props.date.toLocaleDateString("sv-SE")}
-      </Typography>
-      <Typography mt={2}>{props.text}</Typography>
-    </Box>
-  );
+interface NewPostPropsInterface{
+    onSubmit: (heading: string, text: string) => void;
+}
+
+export default function NewPost(props: NewPostPropsInterface) {
+    const [isOpen, setIsOpen] = useState(false);
+    const theme = useTheme();
+
+    const toggleAccordion = () => {
+        setIsOpen(!isOpen);
+    };
+
+    return (
+        <Box marginBottom={8}>
+            <Button onClick={toggleAccordion} variant="contained" sx={{ backgroundColor: theme.palette.info.main }}>
+                {isOpen ? 'Avbryt' : 'Lägg till ny händelse'}
+            </Button>
+            <Collapse in={isOpen}>
+                <Form onSubmit={props.onSubmit}/>
+            </Collapse>
+        </Box>
+    );
 }
