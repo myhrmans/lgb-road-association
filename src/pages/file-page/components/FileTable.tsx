@@ -8,11 +8,11 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
-import { Data } from "../common/types/Types";
+import { Data } from "../../../common/types/Types";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import { EnhancedTableHead } from "./TableHead";
 import { EnhancedTableToolbar } from "./TableToolbar";
-import { UserAuth } from "../common/contexts/AuthContext";
+import { UserAuth } from "../../../common/contexts/AuthContext";
 import { Dispatch, SetStateAction, useState } from "react";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -152,7 +152,7 @@ export default function FileTable({
         />
         <TableContainer>
           <Table
-            sx={{ minWidth: 750 }}
+            sx={{ minWidth: 750, mt: 2 }}
             aria-labelledby="tableTitle"
             size="medium"
           >

@@ -6,7 +6,7 @@ import {
   TableSortLabel,
   Box,
 } from "@mui/material";
-import { Order, Data, HeadCell } from "../common/types/Types";
+import { Order, Data, HeadCell } from "../../../common/types/Types";
 import { visuallyHidden } from "@mui/utils";
 
 const headCells: readonly HeadCell[] = [

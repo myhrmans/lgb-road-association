@@ -4,7 +4,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import { NewsData } from "../common/types/Types";
+import { NewsData } from "../../../common/types/Types";
 
 export default function NewsCard(props: NewsData) {
   const navigate = useNavigate();

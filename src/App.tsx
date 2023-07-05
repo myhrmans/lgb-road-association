@@ -1,14 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import Shell from "./components/Shell";
+import HomePage from "./pages/home-page/HomePage";
+import Shell from "./pages/common/Shell";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import { FilePage } from "./pages/FilePage";
+import { FilePage } from "./pages/file-page/FilePage";
 import { AuthContextProvider } from "./common/contexts/AuthContext";
-import { LoginForm } from "./components/LoginForm";
+import { LoginForm } from "./pages/common/LoginForm";
 import { ProtectedRoutes } from "./components/ProtectedRoutes";
-import NewsPage from "./pages/NewsPage";
-import { ContactPage } from "./pages/ContactPage";
+import NewsPage from "./pages/news-page/NewsPage";
+import { ContactPage } from "./pages/contact-page/ContactPage";
 
 function App() {
   const theme = createTheme({
@@ -22,6 +22,9 @@ function App() {
       text: {
         secondary: "#818b9b",
       },
+      info: {
+        main: "#bdbdbd"
+      }
     },
   });
 

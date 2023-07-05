@@ -16,11 +16,11 @@ export default function Footer(props: any) {
         alignItems="center"
       >
         <Container sx={{ display: "flex", justifyContent: "center" }}>
-          <Box width={300}>
+          <Box width={300} sx={{textAlign: "center"}}>
             <PlaceIcon fontSize="large" color="secondary" sx={{ mx: "auto" }} />
             <Typography color="secondary">311 69, Ugglarp</Typography>
           </Box>
-          <Box width={300}>
+          <Box width={300} sx={{textAlign: "center"}}>
             <EmailIcon fontSize="large" color="secondary" sx={{ mx: 5 }} />
             <Typography color="secondary">
               lassagardsberg@fakeemail.com
@@ -36,16 +36,14 @@ export default function Footer(props: any) {
           width: "100%",
         }}
       >
-        {/* <Box sx={{}}> */}
         <Typography variant="body2" align="center" {...props} marginY="30px">
           {"Copyright © "}
-          <Link color="inherit" href="https://mui.com/">
+          <Link color="inherit" >
             Lassagårdsbergs Vägförening
           </Link>{" "}
           {new Date().getFullYear()}
           {"."}
         </Typography>
-        {/* </Box> */}
       </Grid>
     </Grid>
   );

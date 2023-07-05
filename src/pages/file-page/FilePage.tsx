@@ -7,9 +7,9 @@ import {
   StorageReference,
 } from "firebase/storage";
 import { useEffect, useState } from "react";
-import { Data } from "../common/types/Types";
-import FileTable from "../components/FileTable";
-import { firebaseStorage } from "../config/firebase";
+import { Data } from "../../common/types/Types";
+import FileTable from "./components/FileTable";
+import { firebaseStorage } from "../../config/firebase";
 
 export function createData(
   fileName: string,

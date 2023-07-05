@@ -1,8 +1,8 @@
 import { Divider, Grid } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DocumentData } from "firebase/firestore";
-import { UserAuth } from "../common/contexts/AuthContext";
-import NewsPost from "../components/NewsPost";
+import { UserAuth } from "../../common/contexts/AuthContext";
+import NewsPost from "./components/NewsPost";
 
 export default function NewsPage() {
   const { getNewsCollection } = UserAuth();

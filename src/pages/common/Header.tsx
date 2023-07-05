@@ -17,9 +17,9 @@ import {
 import { getDownloadURL, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserAuth } from "../common/contexts/AuthContext";
-import { firebaseStorage } from "../config/firebase";
-import logo from "../highland-cow_logo.png";
+import { UserAuth } from "../../common/contexts/AuthContext";
+import { firebaseStorage } from "../../config/firebase";
+import logo from "../../highland-cow_logo.png";
 
 export default function Header() {
   const navigate = useNavigate();

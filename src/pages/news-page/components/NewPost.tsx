@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { NewsData } from "../common/types/Types";
+import { NewsData } from "../../../common/types/Types";
 
 export default function NewsPost(props: NewsData) {
   return (

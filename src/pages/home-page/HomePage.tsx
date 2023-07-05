@@ -1,9 +1,9 @@
 import { Grid } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { DocumentData } from "firebase/firestore";
-import { UserAuth } from "../common/contexts/AuthContext";
-import HomePost from "../components/HomePost";
-import NewsCard from "../components/NewsCard";
+import { UserAuth } from "../../common/contexts/AuthContext";
+import HomePost from "./components/HomePost";
+import NewsCard from "./components/NewsCard";
 
 const HomePage = () => {
   const { getNewsCollection } = UserAuth();
