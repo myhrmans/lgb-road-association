@@ -1,11 +1,11 @@
 {
   "files": {
-    "main.js": "/lgb-road-association/static/js/main.ad9c34f9.js",
-    "static/media/highland-cow_logo.png": "/lgb-road-association/static/media/highland-cow_logo.5f61e6f45ed1d7329e79.png",
-    "index.html": "/lgb-road-association/index.html",
-    "main.ad9c34f9.js.map": "/lgb-road-association/static/js/main.ad9c34f9.js.map"
+    "main.js": "/static/js/main.aa289fcc.js",
+    "static/media/highland-cow_logo.png": "/static/media/highland-cow_logo.5f61e6f45ed1d7329e79.png",
+    "index.html": "/index.html",
+    "main.aa289fcc.js.map": "/static/js/main.aa289fcc.js.map"
   },
   "entrypoints": [
-    "static/js/main.ad9c34f9.js"
+    "static/js/main.aa289fcc.js"
   ]
 }
